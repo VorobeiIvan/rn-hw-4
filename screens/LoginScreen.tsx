@@ -1,22 +1,19 @@
 import { useState } from "react";
 import {
   Alert,
-  Dimensions,
   Image,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
-  StyleSheet,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { colors } from "../styles/global";
-import Input from "../components/Input";
-import Button from "../components/Button";
 
-const { width: SCREEN_WIDTH } = Dimensions.get("screen");
+import { MESSAGE, BUTTON, PLACEHOLDER, TITLE, IMAGES } from "../constants";
+import { Button, Input, Title } from "../components";
+import styles from "./stylesScreens";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
@@ -45,7 +42,11 @@ const LoginScreen = () => {
 
   const showButton = (
     <TouchableOpacity onPress={showPassword}>
-      <Text style={[styles.baseText, styles.passwordButtonText]}>Показати</Text>
+      <Text style={[styles.baseText, styles.passwordButtonText]}>
+        {isPasswordVisible === true
+          ? BUTTON.PASSWORD_SHOW
+          : BUTTON.PASSWORD_HIDE}
+      </Text>
     </TouchableOpacity>
   );
 
@@ -56,24 +57,24 @@ const LoginScreen = () => {
         behavior={Platform.OS == "ios" ? "padding" : "height"}
       >
         <Image
-          source={require("../assets/images/background.png")}
+          source={IMAGES.MAIN_BACKGROUND}
           resizeMode="cover"
           style={styles.image}
         />
         <View style={styles.formContainer}>
-          <Text style={styles.title}>Увійти</Text>
+          <Title text={TITLE.AUTHORIZATION} />
 
           <View style={[styles.innerContainer, styles.inputContainer]}>
             <Input
               value={email}
               autofocus={true}
-              placeholder="Адреса електронної пошти"
+              placeholder={PLACEHOLDER.EMAIL}
               onTextChange={handleEmailChange}
             />
 
             <Input
               value={password}
-              placeholder="Пароль"
+              placeholder={PLACEHOLDER.PASSWORD}
               rightButton={showButton}
               outerStyles={styles.passwordButton}
               onTextChange={handlePasswordChange}
@@ -84,15 +85,15 @@ const LoginScreen = () => {
           <View style={[styles.innerContainer, styles.buttonContainer]}>
             <Button onPress={onLogin}>
               <Text style={[styles.baseText, styles.loginButtonText]}>
-                Увійти
+                {BUTTON.AUTHORIZATION}
               </Text>
             </Button>
 
             <View style={styles.signUpContainer}>
               <Text style={[styles.baseText, styles.passwordButtonText]}>
-                Немає акаунту?
+                {MESSAGE.ACCOUNT_NOT_EXISTS}
                 <TouchableWithoutFeedback onPress={onSignUp}>
-                  <Text style={styles.signUpText}> Зареєструватися</Text>
+                  <Text style={styles.signUpText}> {BUTTON.REGISTRATION}</Text>
                 </TouchableWithoutFeedback>
               </Text>
             </View>
@@ -105,65 +106,65 @@ const LoginScreen = () => {
 
 export default LoginScreen;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "flex-end",
-  },
-  innerContainer: {
-    gap: 16,
-  },
-  inputContainer: {
-    marginTop: 32,
-  },
-  buttonContainer: {
-    marginTop: 42,
-  },
-  image: {
-    position: "absolute",
-    top: 0,
-    bottom: 0,
-    height: "100%",
-    width: "100%",
-  },
-  formContainer: {
-    width: SCREEN_WIDTH,
-    height: "50%",
-    backgroundColor: colors.white,
-    borderTopRightRadius: 25,
-    borderTopLeftRadius: 25,
-    paddingHorizontal: 16,
-    paddingTop: 32,
-  },
-  title: {
-    fontSize: 30,
-    fontWeight: "500",
-    lineHeight: 36,
-    textAlign: "center",
-  },
-  baseText: {
-    fontWeight: "400",
-    fontSize: 16,
-    lineHeight: 18,
-  },
-  loginButtonText: {
-    color: colors.white,
-    textAlign: "center",
-  },
-  passwordButtonText: {
-    color: colors.blue,
-  },
-  passwordButton: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  signUpContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  signUpText: {
-    textDecorationLine: "underline",
-  },
-});
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     alignItems: "center",
+//     justifyContent: "flex-end",
+//   },
+//   innerContainer: {
+//     gap: 16,
+//   },
+//   inputContainer: {
+//     marginTop: 32,
+//   },
+//   buttonContainer: {
+//     marginTop: 42,
+//   },
+//   image: {
+//     position: "absolute",
+//     top: 0,
+//     bottom: 0,
+//     height: "100%",
+//     width: "100%",
+//   },
+//   formContainer: {
+//     width: SCREEN_WIDTH,
+//     height: "50%",
+//     backgroundColor: colors.white,
+//     borderTopRightRadius: 25,
+//     borderTopLeftRadius: 25,
+//     paddingHorizontal: 16,
+//     paddingTop: 32,
+//   },
+//   title: {
+//     fontSize: 30,
+//     fontWeight: "500",
+//     lineHeight: 36,
+//     textAlign: "center",
+//   },
+//   baseText: {
+//     fontWeight: "400",
+//     fontSize: 16,
+//     lineHeight: 18,
+//   },
+//   loginButtonText: {
+//     color: colors.white,
+//     textAlign: "center",
+//   },
+//   passwordButtonText: {
+//     color: colors.blue,
+//   },
+//   passwordButton: {
+//     flexDirection: "row",
+//     justifyContent: "space-between",
+//   },
+//   signUpContainer: {
+//     flexDirection: "row",
+//     alignItems: "center",
+//     justifyContent: "center",
+//   },
+//   signUpText: {
+//     textDecorationLine: "underline",
+//   },
+// });

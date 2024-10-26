@@ -1,8 +1,8 @@
-// import { useEffect } from "react";
 import { ActivityIndicator } from "react-native";
 import { useFonts } from "expo-font";
 
-// import LoginScreen from "./screens/LoginScreen";
+import AddAvatarButtonIcon from "./icons/AddAvatarButtonIcon";
+import LoginScreen from "./screens/LoginScreen";
 import RegistrationScreen from "./screens/RegistrationScreen";
 
 export default function App() {
@@ -17,6 +17,5 @@ export default function App() {
     return <ActivityIndicator size="large" />; // Показуй індикатор завантаження
   }
 
-  // return <LoginScreen />;
   return <RegistrationScreen />;
 }
