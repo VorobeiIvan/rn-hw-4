@@ -1,7 +1,6 @@
 import { FC } from "react";
-import { StyleSheet, TouchableOpacity, ViewStyle } from "react-native";
-
-import { colors } from "../styles/global";
+import { TouchableOpacity, ViewStyle } from "react-native";
+import style from "./ButtonStyles";
 
 type ButtonProps = {
   children: React.ReactNode;
@@ -18,12 +17,3 @@ const Button: FC<ButtonProps> = ({ children, onPress, buttonStyle }) => {
 };
 
 export default Button;
-
-const style = StyleSheet.create({
-  button: {
-    borderRadius: 100,
-    backgroundColor: colors.orange,
-    paddingVertical: 16,
-    paddingHorizontal: 32,
-  },
-});

@@ -1,21 +1,27 @@
-import { useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import {
   Alert,
+  Dimensions,
   Image,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
+  StyleSheet,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-
 import { MESSAGE, BUTTON, PLACEHOLDER, TITLE, IMAGES } from "../constants";
 import { Button, Input, Title } from "../components";
 import styles from "./stylesScreens";
+import { useFocusEffect, useIsFocused } from "@react-navigation/native";
+import { NativeStackScreenProps } from "react-native-screens/lib/typescript/native-stack/types";
 
-const LoginScreen = () => {
+// Типізуємо параметри для HomeScreen
+type HomeScreenProps = NativeStackScreenProps<StackParamList, "Login">;
+
+const LoginScreen: FC<HomeScreenProps> = ({ navigation, route }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(true);
@@ -33,11 +39,13 @@ const LoginScreen = () => {
   };
 
   const onLogin = () => {
-    Alert.alert("Credentials", `${email} + ${password}`);
+    // Alert.alert("Credentials", `${email} + ${password}`);
+    navigation.navigate("Home");
   };
 
   const onSignUp = () => {
-    console.log("Sign up!");
+    // console.log("Sign up!");
+    navigation.navigate("Registration", { userEmail: email });
   };
 
   const showButton = (
@@ -52,54 +60,57 @@ const LoginScreen = () => {
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <KeyboardAvoidingView
-        style={styles.container}
-        behavior={Platform.OS == "ios" ? "padding" : "height"}
-      >
+      <>
         <Image
           source={IMAGES.MAIN_BACKGROUND}
           resizeMode="cover"
           style={styles.image}
         />
-        <View style={styles.formContainer}>
-          <Title text={TITLE.AUTHORIZATION} />
 
-          <View style={[styles.innerContainer, styles.inputContainer]}>
-            <Input
-              value={email}
-              autofocus={true}
-              placeholder={PLACEHOLDER.EMAIL}
-              onTextChange={handleEmailChange}
-            />
+        <KeyboardAvoidingView
+          style={styles.container}
+          behavior={Platform.OS == "ios" ? "padding" : "height"}
+        >
+          <View style={styles.formContainer}>
+            <Title text={TITLE.AUTHORIZATION} />
 
-            <Input
-              value={password}
-              placeholder={PLACEHOLDER.PASSWORD}
-              rightButton={showButton}
-              outerStyles={styles.passwordButton}
-              onTextChange={handlePasswordChange}
-              secureTextEntry={isPasswordVisible}
-            />
-          </View>
+            <View style={[styles.innerContainer, styles.inputContainer]}>
+              <Input
+                value={email}
+                autofocus={true}
+                placeholder={PLACEHOLDER.EMAIL}
+                onTextChange={handleEmailChange}
+              />
 
-          <View style={[styles.innerContainer, styles.buttonContainer]}>
-            <Button onPress={onLogin}>
-              <Text style={[styles.baseText, styles.loginButtonText]}>
-                {BUTTON.AUTHORIZATION}
-              </Text>
-            </Button>
+              <Input
+                value={password}
+                placeholder={PLACEHOLDER.PASSWORD}
+                rightButton={showButton}
+                outerStyles={styles.passwordButton}
+                onTextChange={handlePasswordChange}
+                secureTextEntry={isPasswordVisible}
+              />
+            </View>
 
-            <View style={styles.signUpContainer}>
-              <Text style={[styles.baseText, styles.passwordButtonText]}>
-                {MESSAGE.ACCOUNT_NOT_EXISTS}
-                <TouchableWithoutFeedback onPress={onSignUp}>
-                  <Text style={styles.signUpText}> {BUTTON.REGISTRATION}</Text>
-                </TouchableWithoutFeedback>
-              </Text>
+            <View style={[styles.innerContainer, styles.buttonContainer]}>
+              <Button onPress={onLogin}>
+                <Text style={[styles.baseText, styles.loginButtonText]}>
+                  {BUTTON.AUTHORIZATION}
+                </Text>
+              </Button>
+
+              <View style={styles.signUpContainer}>
+                <Text style={[styles.baseText, styles.passwordButtonText]}>
+                  {MESSAGE.ACCOUNT_NOT_EXISTS}
+                  <TouchableWithoutFeedback onPress={onSignUp}>
+                    <Text style={styles.signUpText}>{BUTTON.REGISTRATION}</Text>
+                  </TouchableWithoutFeedback>
+                </Text>
+              </View>
             </View>
           </View>
-        </View>
-      </KeyboardAvoidingView>
+        </KeyboardAvoidingView>
+      </>
     </TouchableWithoutFeedback>
   );
 };
@@ -130,7 +141,7 @@ export default LoginScreen;
 //   },
 //   formContainer: {
 //     width: SCREEN_WIDTH,
-//     height: "50%",
+//     height: "55%",
 //     backgroundColor: colors.white,
 //     borderTopRightRadius: 25,
 //     borderTopLeftRadius: 25,

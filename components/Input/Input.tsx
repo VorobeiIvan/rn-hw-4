@@ -1,11 +1,12 @@
+import React, { FC, useState } from "react";
 import { StyleSheet, TextInput, View, ViewProps } from "react-native";
 import { colors } from "../styles/global";
-import { FC, useState } from "react";
 
 type InputProps = {
   value: string;
   placeholder?: string;
   outerStyles?: ViewProps["style"];
+  leftButton?: React.ReactNode;
   rightButton?: React.ReactNode;
   onTextChange: (value: string) => void;
   secureTextEntry?: boolean;
@@ -17,6 +18,7 @@ const Input: FC<InputProps> = ({
   onTextChange,
   placeholder,
   outerStyles,
+  leftButton,
   rightButton,
   autofocus = false,
   secureTextEntry = false,
@@ -33,6 +35,7 @@ const Input: FC<InputProps> = ({
 
   return (
     <View style={[styles.input, isFocused && styles.focused, outerStyles]}>
+      {leftButton}
       <TextInput
         value={value}
         autoFocus={autofocus}
@@ -44,7 +47,6 @@ const Input: FC<InputProps> = ({
         onFocus={onFocus}
         onBlur={onBlur}
       />
-
       {rightButton}
     </View>
   );
@@ -52,14 +54,16 @@ const Input: FC<InputProps> = ({
 
 const styles = StyleSheet.create({
   input: {
-    padding: 16,
-    height: 50,
+    flexDirection: "row",
     borderRadius: 16,
     borderWidth: 1,
     borderColor: colors.border_gray,
     backgroundColor: colors.light_gray,
   },
   baseText: {
+    padding: 16,
+    height: 50,
+    width: "100%",
     fontWeight: "400",
     fontSize: 16,
     lineHeight: 18,
