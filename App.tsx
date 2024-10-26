@@ -1,8 +1,6 @@
 import { ActivityIndicator } from "react-native";
 import { useFonts } from "expo-font";
 
-import AddAvatarButtonIcon from "./icons/AddAvatarButtonIcon";
-import LoginScreen from "./screens/LoginScreen";
 import RegistrationScreen from "./screens/RegistrationScreen";
 
 export default function App() {

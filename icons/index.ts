@@ -1,2 +1,12 @@
 export { default as AddAvatarButtonIcon } from "./AddAvatarButtonIcon";
 export { default as RemoveAvatarButtonIcon } from "./RemoveAvatarButtonIcon";
+export { default as MapPinIcon } from "./MapPinIcon";
+export { default as MassageCircleIcon } from "./MassageCircleIcon";
+export { default as LikeButtonIcon } from "./LikeButtonIcon";
+export { default as LogOutNavButtonIcon } from "./LogOutNavButtonIcon";
+export { default as HomeNavButtonIcon } from "./HomeNavButtonIcon";
+export { default as UserProfileButtonIcon } from "./UserProfileButtonIcon";
+export { default as CreatePublicationButtonIcon } from "./CreatePublicationButtonIcon";
+export { default as ArrowLeftNavButtonIcon } from "./ArrowLeftNavButtonIcon";
+export { default as AddPhotoButtonIco } from "./AddPhotoButtonIco";
+export { default as CleaningButtonIcon } from "./CleaningButtonIcon";
