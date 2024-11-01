@@ -1,17 +1,11 @@
 import { createStackNavigator } from "@react-navigation/stack";
-// import { NativeStackScreenProps } from "@react-navigation/native-stack"; // Правильний імпорт
-
 import LoginScreen from "../screens/LoginScreen";
 import RegistrationScreen from "../screens/RegistrationScreen";
 import BottomTabNavigator from "./BottomTabNavigator";
+import MapScreen from "../screens/MapScreen";
+import CommentsScreen from "../screens/CommentsScreen";
 
 const Stack = createStackNavigator();
-
-export type StackParamList = {
-  Home: undefined; // Якщо екран не приймає параметрів
-  Login: undefined;
-  Registration: { userEmail: string }; // Якщо екран приймає параметри
-};
 
 const StackNavigator = () => {
   return (
@@ -22,22 +16,10 @@ const StackNavigator = () => {
       }}
     >
       <Stack.Screen name="Login" component={LoginScreen} />
-
-      <Stack.Screen
-        name="Registration"
-        component={RegistrationScreen}
-        options={{
-          title: "",
-        }}
-      />
-
-      <Stack.Screen
-        name="Home"
-        component={BottomTabNavigator}
-        options={{
-          title: "",
-        }}
-      />
+      <Stack.Screen name="Registration" component={RegistrationScreen} />
+      <Stack.Screen name="Home" component={BottomTabNavigator} />
+      <Stack.Screen name="MapScreen" component={MapScreen} />
+      <Stack.Screen name="CommentsScreen" component={CommentsScreen} />
     </Stack.Navigator>
   );
 };
