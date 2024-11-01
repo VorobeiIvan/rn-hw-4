@@ -1,33 +1,45 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
-import { Camera, CameraView } from 'expo-camera';
-import * as Location from 'expo-location';
-import * as MediaLibrary from 'expo-media-library';
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Alert,
+  KeyboardAvoidingView,
+  Keyboard,
+  Platform,
+} from "react-native";
+import { Camera, CameraView } from "expo-camera";
+import * as Location from "expo-location";
+import * as MediaLibrary from "expo-media-library";
+import { colors } from "../styles/global";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 const CreatePostsScreen = ({ navigation }) => {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
-  const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState(null);
+  const [hasMediaLibraryPermission, setHasMediaLibraryPermission] =
+    useState(null);
   const [cameraRef, setCameraRef] = useState(null);
   const [photoUri, setPhotoUri] = useState(null);
-  const [title, setTitle] = useState('');
-  const [location, setLocation] = useState('');
+  const [title, setTitle] = useState("");
+  const [location, setLocation] = useState("");
   const [coords, setCoords] = useState(null);
 
-  // Запит на дозволи
   useEffect(() => {
     (async () => {
       const cameraStatus = await Camera.requestCameraPermissionsAsync();
-      setHasCameraPermission(cameraStatus.status === 'granted');
+      setHasCameraPermission(cameraStatus.status === "granted");
 
       const mediaLibraryStatus = await MediaLibrary.requestPermissionsAsync();
-      setHasMediaLibraryPermission(mediaLibraryStatus.status === 'granted');
+      setHasMediaLibraryPermission(mediaLibraryStatus.status === "granted");
 
-      // Отримання геолокації
       await getLocation();
     })();
   }, []);
 
-  // Функція для зйомки фото
   const takePhoto = async () => {
     if (cameraRef) {
       const photo = await cameraRef.takePictureAsync();
@@ -35,16 +47,18 @@ const CreatePostsScreen = ({ navigation }) => {
       if (hasMediaLibraryPermission) {
         await MediaLibrary.saveToLibraryAsync(photo.uri);
       } else {
-        Alert.alert('Помилка', 'Немає дозволу на збереження фото в медіа-бібліотеку.');
+        Alert.alert(
+          "Помилка",
+          "Немає дозволу на збереження фото в медіа-бібліотеку."
+        );
       }
     }
   };
 
-  // Отримання геолокації
   const getLocation = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== 'granted') {
-      Alert.alert('Помилка', 'Доступ до геолокації був відхилений.');
+    if (status !== "granted") {
+      Alert.alert("Помилка", "Доступ до геолокації був відхилений.");
       return;
     }
     let location = await Location.getCurrentPositionAsync({});
@@ -52,16 +66,15 @@ const CreatePostsScreen = ({ navigation }) => {
       latitude: location.coords.latitude,
       longitude: location.coords.longitude,
     });
-    setLocation(`${location.coords.latitude}, ${location.coords.longitude}`); // Optionally set location input
+    setLocation(`${location.coords.latitude}, ${location.coords.longitude}`);
   };
 
-  // Публікація посту
   const publishPost = () => {
-    if (title && photoUri) { // Make location optional
-      console.log('Post published:', { title, location, photoUri, coords });
-      navigation.navigate('PostsScreen'); // Переходить на екран PostsScreen після публікації
+    if (title && photoUri) {
+      console.log("Post published:", { title, location, photoUri, coords });
+      navigation.navigate("PostsScreen");
     } else {
-      Alert.alert('Помилка', 'Будь ласка, заповніть всі поля.');
+      Alert.alert("Помилка", "Будь ласка, заповніть всі поля.");
     }
   };
 
@@ -76,7 +89,6 @@ const CreatePostsScreen = ({ navigation }) => {
     <View style={styles.container}>
       <Text style={styles.header}>Створити публікацію</Text>
 
-      {/* Камера або зображення */}
       <View style={styles.photoContainer}>
         {photoUri ? (
           <Image source={{ uri: photoUri }} style={styles.photo} />
@@ -89,81 +101,90 @@ const CreatePostsScreen = ({ navigation }) => {
         )}
       </View>
 
-      {/* Поля для введення */}
-      <TextInput
-        style={styles.input}
-        placeholder="Назва..."
-        value={title}
-        onChangeText={setTitle}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Місцевість (не обов'язково)..."
-        value={location}
-        onChangeText={setLocation}
-      />
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Назва..."
+          value={title}
+          onChangeText={setTitle}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Місцевість (не обов'язково)..."
+          value={location}
+          onChangeText={setLocation}
+        />
 
-      {/* Кнопка для публікації */}
-      <TouchableOpacity style={styles.publishButton} onPress={publishPost}>
-        <Text style={styles.publishButtonText}>Опублікувати</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.publishButton} onPress={publishPost}>
+          <Text style={styles.publishButtonText}>Опублікувати</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff",
+  },
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   header: {
     fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontWeight: "bold",
+    textAlign: "center",
     marginVertical: 10,
   },
   photoContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     marginVertical: 20,
   },
   camera: {
-    width: '100%',
+    width: "100%",
     height: 300,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   captureButton: {
-    backgroundColor: '#ff6347',
+    backgroundColor: "#ff6347",
     padding: 10,
     borderRadius: 5,
   },
   captureText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
   },
   photo: {
-    width: '100%',
+    width: "100%",
     height: 300,
     borderRadius: 10,
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     padding: 10,
     borderRadius: 5,
     marginBottom: 10,
   },
   publishButton: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: colors.orange,
     padding: 15,
     borderRadius: 5,
-    alignItems: 'center',
+    alignItems: "center",
   },
   publishButtonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
+  },
+  inputContainer: {
+    flex: 1,
   },
 });
 
